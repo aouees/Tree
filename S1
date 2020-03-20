@@ -1,0 +1,77 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct folder
+{
+    string name;
+    int num_file=0;
+    folder *sub;
+    folder *adj;
+};
+/// creat new folder 
+folder* new_folder(string name, int num)
+{
+    folder folde;
+    folde.name = name;
+    folde.num_file = num;
+    folde.adj = NULL;
+    folde.sub = NULL;
+    folder* fold = &folde;
+    return fold;
+}
+/// tree of folder ....
+class tree
+{
+public:
+    tree() { fold_root = NULL; }
+    void add_folder(folder *s)
+    {
+        if (fold_root == NULL)
+        {
+            fold_root = s;
+        }
+        else if(fold_root->sub==NULL)
+        {
+            fold_root->sub = s;
+        }
+        else
+        {
+            folder* p = fold_root->sub->adj;
+            while (p!=0)
+            {
+                p = p->adj;
+            }
+            p = s;
+        }
+    
+    };
+    void print_Tree()
+    {
+        print_Tree(fold_root);
+    }
+    void print_Tree(folder *a)
+    {
+        if (a != NULL)
+        {
+            print_Tree(a->sub);
+            cout << a->name << " , " << a->num_file << endl;
+            print_Tree(a->adj);
+        }
+    }
+private:
+    folder* fold_root;
+};
+
+
+int main()
+{
+    tree  a;
+    a.add_folder(new_folder("aaa", 0));
+    a.add_folder(new_folder("bbb", 0));
+    a.add_folder(new_folder("bbb", 1));
+    a.add_folder(new_folder("bbb", 2));
+    a.print_Tree();
+    
+}
